@@ -13,7 +13,10 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
+using Summer_School_BE_2020_Final.Interfaces;
 using Summer_School_BE_2020_Final.Models;
+using Summer_School_BE_2020_Final.Services;
 
 namespace Summer_School_BE_2020_Final
 {
@@ -36,7 +39,37 @@ namespace Summer_School_BE_2020_Final
                 options.UseSqlServer(connection));
             services.AddControllersWithViews();
             services.AddControllers();
-            services.AddSwaggerGen();
+
+            services.AddScoped<IGameService, GameService>();
+
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo
+                {
+                    Title = "My API",
+                    Version = "v1"
+                });
+                c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                {
+                    In = ParameterLocation.Header,
+                    Description = "Please insert JWT with Bearer into field",
+                    Name = "Authorization",
+                    Type = SecuritySchemeType.ApiKey
+                });
+                c.AddSecurityRequirement(new OpenApiSecurityRequirement {
+                {
+                     new OpenApiSecurityScheme
+                    {
+                         Reference = new OpenApiReference
+                        {
+                          Type = ReferenceType.SecurityScheme,
+                          Id = "Bearer"
+                         }
+                     },
+                         new string[] { }
+                }
+                });
+            });
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                    .AddJwtBearer(options =>
                    {

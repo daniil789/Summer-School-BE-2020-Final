@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Summer_School_BE_2020_Final.Interfaces;
 using Summer_School_BE_2020_Final.Models;
 
 namespace Summer_School_BE_2020_Final.Controllers
@@ -12,30 +14,44 @@ namespace Summer_School_BE_2020_Final.Controllers
     [Route("api/[controller]")]
     public class GamesController : ControllerBase
     {
-        private ApplicationContext db;
-        public GamesController(ApplicationContext context)
+        private readonly IGameService _service;
+       
+        public GamesController(IGameService service)
         {
-            db = context;
+            _service = service;
+      
         }
 
         [HttpPost]
-        public async Task<ActionResult<Game>> Post(Game game)
+        public async Task<ActionResult<Game>> AddGame(Game game)
         {
             if (game == null)
             {
                 return BadRequest();
             }
 
-            db.Games.Add(game);
-            await db.SaveChangesAsync();
-            return Ok(game);
-
+            try
+            {
+                _service.AddGame(game);
+                return Ok();
+            }
+            catch
+            {
+                return BadRequest();
+            }
         }
+        /// <summary>
+        /// Получить список игр.
+        /// </summary>
+        /// <response code = "200" > Успешное выполнение.</response>
+        /// <response code = "204" > Контент не найден</response>
+        /// <response code = "401" > Данный запрос требует аутентификации.</response>
+        /// <response code = "500" > Непредвиденная ошибка сервера.</response>
+        [Authorize]
         [HttpGet]
-        public async Task<List<Game>> Get()
+        public async Task<Game[]> ViewGames()
         {
-            List<Game> Games =  db.Games.ToList();
-            return Games;
+            return await _service.ViewGames();
         }
 
     }
