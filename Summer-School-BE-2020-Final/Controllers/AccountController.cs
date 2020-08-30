@@ -14,8 +14,8 @@ namespace Summer_School_BE_2020_Final.Controllers
     {
         private List<User> people = new List<User>
         {
-            new User {Login="seller", Password="12345", Role = "seller" },
-            new User { Login="qwerty@gmail.com", Password="55555", Role = "buyer" }
+            new User {Login="seller@gmail.com", Password="12345", Role = "seller" },
+            new User { Login="buyer@gmail.com", Password="12345", Role = "buyer" }
         };
 
         [HttpPost("/token")]

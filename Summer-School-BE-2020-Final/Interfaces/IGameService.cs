@@ -11,6 +11,7 @@ namespace Summer_School_BE_2020_Final.Interfaces
     {
          Task<Game[]> ViewGames();
          void AddGame(Game game);
+         void BuyGame(Purchase purchase);
 
 
     }

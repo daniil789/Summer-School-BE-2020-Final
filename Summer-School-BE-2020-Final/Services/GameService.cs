@@ -29,5 +29,20 @@ namespace Summer_School_BE_2020_Final.Services
             return games;
              
         }
+
+        public void BuyGame(Purchase purchase)
+        {
+            var games = db.Games;
+            foreach(var game in games)
+            {
+                if(purchase.Game == game.Name)
+                {
+                    db.Games.Remove(game);
+                    break;
+                }
+
+
+            }
+        }
     }
 }

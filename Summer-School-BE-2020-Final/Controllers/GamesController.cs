@@ -56,17 +56,18 @@ namespace Summer_School_BE_2020_Final.Controllers
             return await _service.ViewGames();
         }
 
-        [Authorize(Roles = "Buyer")]
-        public async Task<ActionResult<Game>> BuyGame(Game game)
+        [Authorize(Roles = "buyer")]
+        [HttpPost("BuyGame")]
+        public async Task<ActionResult<Purchase>> BuyGame(Purchase purchase)
         {
-            if (game == null)
+            if (purchase == null)
             {
                 return BadRequest();
             }
 
             try
             {
-                
+                _service.BuyGame(purchase);
                 return Ok();
             }
             catch

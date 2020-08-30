@@ -9,6 +9,7 @@ namespace Summer_School_BE_2020_Final.Models
     public class Game
     {
         public string Name {get;set;}
+        public int Price { get; set; }
         [Key]
         public string Key { get; set; }
 
