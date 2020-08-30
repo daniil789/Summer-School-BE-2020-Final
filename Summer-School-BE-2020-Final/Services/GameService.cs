@@ -21,7 +21,7 @@ namespace Summer_School_BE_2020_Final.Services
         public void AddGame(Game game)
         {
             db.Games.Add(game);
-            db.SaveChangesAsync();
+            db.SaveChanges();
             
         }
 
@@ -33,23 +33,17 @@ namespace Summer_School_BE_2020_Final.Services
         }
 
         public void BuyGame(Purchase purchase)
-        {
-            if (_validateService.LuhnAlgorithm(purchase.CardNumber))
-            {
+        { 
                 var games = db.Games;
                 foreach (var game in games)
                 {
                     if (purchase.Game == game.Name)
                     {
                         db.Games.Remove(game);
-                        db.SaveChangesAsync();
+                        db.SaveChanges();
                         break;
                     }
-
-
-                }
-            }
-            
+                }   
         }
     }
 }

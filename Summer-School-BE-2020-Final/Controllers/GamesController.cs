@@ -67,6 +67,7 @@ namespace Summer_School_BE_2020_Final.Controllers
 
             try
             {
+                //_validateService.LuhnAlgorithm(purchase.CardNumber);
                 _service.BuyGame(purchase);
                 return Ok();
             }
