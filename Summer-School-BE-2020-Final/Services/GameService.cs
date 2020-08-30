@@ -12,9 +12,11 @@ namespace Summer_School_BE_2020_Final.Services
     public class GameService : IGameService
     {
         private ApplicationContext db;
-        public GameService(ApplicationContext context)
+        private readonly IValidateService _validateService;
+        public GameService(ApplicationContext context, IValidateService validateService)
         {
             db = context;
+            _validateService = validateService;
         }
         public void AddGame(Game game)
         {
@@ -32,17 +34,22 @@ namespace Summer_School_BE_2020_Final.Services
 
         public void BuyGame(Purchase purchase)
         {
-            var games = db.Games;
-            foreach(var game in games)
+            if (_validateService.LuhnAlgorithm(purchase.CardNumber))
             {
-                if(purchase.Game == game.Name)
+                var games = db.Games;
+                foreach (var game in games)
                 {
-                    db.Games.Remove(game);
-                    break;
+                    if (purchase.Game == game.Name)
+                    {
+                        db.Games.Remove(game);
+                        db.SaveChangesAsync();
+                        break;
+                    }
+
+
                 }
-
-
             }
+            
         }
     }
 }
