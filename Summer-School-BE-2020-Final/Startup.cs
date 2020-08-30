@@ -41,6 +41,7 @@ namespace Summer_School_BE_2020_Final
             services.AddControllers();
 
             services.AddScoped<IGameService, GameService>();
+            services.AddScoped<IValidateService, ValidateService>();
 
             services.AddSwaggerGen(c =>
             {

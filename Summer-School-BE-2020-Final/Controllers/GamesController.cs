@@ -15,14 +15,16 @@ namespace Summer_School_BE_2020_Final.Controllers
     public class GamesController : ControllerBase
     {
         private readonly IGameService _service;
-       
-        public GamesController(IGameService service)
+        private readonly IValidateService _validateService;
+
+        public GamesController(IGameService service, IValidateService validateService)
         {
             _service = service;
-      
-        }
+            _validateService = validateService;
 
-        [HttpPost]
+        }
+        [Authorize(Roles = "seller")]
+        [HttpPost("AddGame")]
         public async Task<ActionResult<Game>> AddGame(Game game)
         {
             if (game == null)
@@ -48,11 +50,30 @@ namespace Summer_School_BE_2020_Final.Controllers
         /// <response code = "401" > Данный запрос требует аутентификации.</response>
         /// <response code = "500" > Непредвиденная ошибка сервера.</response>
         [Authorize]
-        [HttpGet]
+        [HttpGet("ViewGames")]
         public async Task<Game[]> ViewGames()
         {
             return await _service.ViewGames();
         }
 
+        [Authorize(Roles = "Buyer")]
+        public async Task<ActionResult<Game>> BuyGame(Game game)
+        {
+            if (game == null)
+            {
+                return BadRequest();
+            }
+
+            try
+            {
+                
+                return Ok();
+            }
+            catch
+            {
+                return BadRequest();
+            }
+
+        }
     }
 }
