@@ -9,6 +9,7 @@ namespace Summer_School_BE_2020_Final.Models
     public class ApplicationContext : DbContext
     {
         public DbSet<Game> Games {get;set;}
+        public DbSet<Purchase> purchases { get; set; }
         public ApplicationContext(DbContextOptions<ApplicationContext> options)
             : base(options)
         {

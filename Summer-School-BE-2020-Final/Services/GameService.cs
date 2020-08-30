@@ -40,6 +40,7 @@ namespace Summer_School_BE_2020_Final.Services
                     if (purchase.Game == game.Name)
                     {
                         db.Games.Remove(game);
+                        db.purchases.Add(purchase);
                         db.SaveChanges();
                         break;
                     }
