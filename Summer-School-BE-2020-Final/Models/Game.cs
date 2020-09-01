@@ -11,7 +11,7 @@ namespace Summer_School_BE_2020_Final.Models
         public string Name {get;set;}
         public int Price { get; set; }
         [Key]
-        public string Key { get; set; }
+        public string Key123123 { get; set; }
 
     }
 }
